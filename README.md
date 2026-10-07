@@ -41,14 +41,15 @@ The first page displays total sales of **$302.13M** and **10.002K orders** for t
 
 ```text
 .
+├── .gitignore
 ├── README.md
 ├── docs/
 │   └── PROJECT_OVERVIEW.md
 └── assets/
     └── dashboard-preview/
-        ├── e-commerce-dashboard-pages-1-2.pdf
-        ├── product-analysis.png
-        └── sales-overview.png
+        ├── e-commerce-dashboard-pages-1-2-optimized.pdf
+        ├── product-analysis-preview.jpg
+        └── sales-overview-preview.jpg
 ```
 
 ## Tools and workflow
