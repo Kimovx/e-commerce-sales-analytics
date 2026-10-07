@@ -2,29 +2,31 @@
 
 ## Objective
 
-Present e-commerce sales performance in a clear dashboard and document the data path from its original spreadsheet to an analysis-ready reporting layer.
+Prepare e-commerce sales records, load a star-style fact-and-dimension model into SQL Server, and communicate results through a dashboard report.
 
 ## Data journey
 
-1. **Excel:** initial source for the sales records.
-2. **Python:** data preparation and transformation.
-3. **Microsoft SQL Server:** centralized storage for querying.
-4. **Dashboard:** business-facing views for trends and performance.
+1. **Excel/source data:** the project began with sales data in Excel; the supplied analysis dataset is a 10,005-row CSV.
+2. **Python:** `main.py` parses order dates, derives `TotalAmount`, builds dimensions for product, platform, date, and city/address, joins their keys into `fact_sales`, and removes rows missing required sales fields.
+3. **Microsoft SQL Server:** pandas `to_sql` writes the model tables to the `ecommerce_10000` database on local SQL Server LocalDB.
+4. **Dashboard:** the supplied two-page report shows sales KPIs and trends, product performance, category comparisons, and brand mix.
 
-## Dashboard pages included
+## Tables
 
-- **Page 1 — Sales overview:** date filter, KPI cards, and monthly sales trend.
-- **Page 2 — Product analysis:** product sales ranking, category comparison, brand mix, and product performance table.
+- `fact_sales`
+- `dim_product`
+- `dim_platform`
+- `dim_date`
+- `dim_customer_address`
 
-## Values visible in the report
+## Summary queries
 
-- Total sales amount: **$302.13M**
-- Orders count: **10.002K**
-- Date range: **January 1–December 26, 2024**
-- Product KPI: **10**, under the source label “Total Products Sold”
+The script queries the sales date range, counts distinct order IDs, and identifies the product with the highest total sales amount.
 
-Values above are transcribed from the dashboard preview and have not been independently recalculated against source data.
+## Dashboard values
 
-## Scope and current limitations
+The first report page displays **$302.13M** total sales and **10.002K** orders for **January 1–December 26, 2024**. Its product KPI displays **10** with the label “Total Products Sold.” These values are transcribed from the dashboard and have not been reconciled against a live SQL Server run.
 
-This repository currently contains the two requested report pages and project documentation. The original Excel workbook, Python scripts, SQL Server scripts/data, and editable dashboard were not supplied, so the pipeline is described based on the project brief and is not executable from this repository yet.
+## Included files and limitations
+
+The repository includes `main.py`, the supplied sales dataset as a gzip-compressed CSV, five SVG icons, Python dependency declarations, and the first two dashboard report pages. The source Excel workbook, editable dashboard project, and separate SQL scripts were not present in the supplied directory. The script creates/replaces tables through `to_sql` when run.

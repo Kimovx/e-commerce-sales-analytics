@@ -4,13 +4,16 @@ __pycache__/
 .venv/
 venv/
 
-# Local configuration and secrets
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local configuration, credentials, and database files
 .env
 *.pfx
 *.key
-
-# Editor and operating-system files
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
+*.db
+*.sqlite
+*.sqlite3

@@ -1,8 +1,6 @@
-# E-Commerce Sales Analytics Dashboard
+# E-Commerce Sales Analytics
 
-An end-to-end e-commerce sales analytics project documenting the journey from an Excel source workbook to Python data preparation, SQL Server storage, and a business-facing dashboard.
-
-> The dashboard pages included here are the first two pages of the supplied report. The source workbook, Python scripts, SQL Server schema/data, and editable dashboard file were not included with the source material, so this repository documents the workflow and presents the report preview without claiming those implementation files are available.
+An end-to-end e-commerce sales analytics project that prepares a source dataset with Python, loads a fact-and-dimension model into Microsoft SQL Server, and presents business insights in a dashboard report.
 
 ## Dashboard preview
 
@@ -16,26 +14,25 @@ An end-to-end e-commerce sales analytics project documenting the journey from an
 
 [Download the two-page dashboard PDF](assets/dashboard-preview/e-commerce-dashboard-pages-1-2-optimized.pdf)
 
-## Project story
-
-The work started with sales data in Excel. Python was used to prepare and structure the data, which was then stored in Microsoft SQL Server for querying. The final dashboard turns the prepared data into a concise view of sales trends, product performance, categories, brands, and orders.
+## Project workflow
 
 ```mermaid
 flowchart LR
-    A[Excel source workbook] --> B[Python data preparation]
+    A[CSV dataset] --> B[Python preparation]
     B --> C[Microsoft SQL Server]
     C --> D[Analytics dashboard]
-    D --> E[Sales and product insights]
 ```
 
-## What the report shows
+The project began with sales data in Excel. The included 10,005-row CSV is the analysis dataset. The Python script parses dates, derives sales amounts, builds dimension tables, loads the model into SQL Server, and runs summary queries. The dashboard report presents sales trends and product, category, and brand performance.
 
-- **Sales overview:** date range, order count, total sales amount, products sold, and monthly sales trend.
-- **Product performance:** highest-selling products and a product table with category, brand, quantity, reviews, rating, and sales amount.
-- **Category analysis:** sales comparison across Electronics, Fashion, Computers, Wearables, and Accessories.
-- **Brand analysis:** a breakdown of sales by brand.
+## Dashboard highlights
 
-The first page displays total sales of **$302.13M** and **10.002K orders** for the selected date range (**January 1 to December 26, 2024**). The report labels the product KPI “Total Products Sold” and shows **10**; that label/value is reproduced as shown in the source report.
+- Total sales shown: **$302.13M**
+- Orders shown: **10.002K**
+- Date range shown: **January 1 to December 26, 2024**
+- Product sales ranking, category comparison, brand mix, and product performance table
+
+The product KPI is labeled “Total Products Sold” and displays **10** in the source report. Values above are reproduced as shown and were not independently recalculated against the SQL database.
 
 ## Repository contents
 
@@ -43,6 +40,15 @@ The first page displays total sales of **$302.13M** and **10.002K orders** for t
 .
 ├── .gitignore
 ├── README.md
+├── main.py
+├── requirements.txt
+├── ecommerce_10000.csv.gz
+├── Icons/
+│   ├── categories.svg
+│   ├── home.svg
+│   ├── orders.svg
+│   ├── products.svg
+│   └── sales.svg
 ├── docs/
 │   └── PROJECT_OVERVIEW.md
 └── assets/
@@ -52,19 +58,31 @@ The first page displays total sales of **$302.13M** and **10.002K orders** for t
         └── sales-overview-preview.jpg
 ```
 
-## Tools and workflow
+The Python environment and IDE settings from the source folder are intentionally omitted. The dataset is stored as gzip-compressed CSV; `main.py` reads it directly.
 
-| Stage | Tool | Role |
-| --- | --- | --- |
-| Source data | Microsoft Excel | Initial sales workbook |
-| Preparation | Python | Cleaning and transformation step |
-| Data storage | Microsoft SQL Server | Structured storage and querying |
-| Reporting | Dashboard | Sales, product, category, and brand analysis |
+## Run the pipeline
 
-## Reproducing the full project
+1. Install Python 3.10 or later, Microsoft SQL Server LocalDB, and Microsoft ODBC Driver 17 for SQL Server.
+2. Install Python dependencies:
 
-To make this repository fully reproducible, add the source workbook (or a privacy-safe sample), Python preparation scripts, SQL Server schema and queries, and the editable dashboard project. Avoid committing credentials or confidential customer-level data.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Source
+3. From the repository root, run:
 
-Dashboard preview extracted from the supplied **E-Commerce Sales.pdf**. Only pages 1 and 2 are included in this repository.
+   ```bash
+   python main.py
+   ```
+
+The script connects to `(localdb)\MSSQLLocalDB`, uses the `ecommerce_10000` database, creates/replaces the dimension and fact tables, and prints the sales date range, distinct order count, and top-selling product.
+
+## Data model
+
+- `fact_sales`
+- `dim_product`
+- `dim_platform`
+- `dim_date`
+- `dim_customer_address`
+
+The tables are created by `pandas.DataFrame.to_sql`; separate SQL schema scripts were not part of the supplied project folder. The editable dashboard project was also not present, so this repository includes the two-page PDF report and static previews.
